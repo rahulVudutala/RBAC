@@ -28,8 +28,8 @@ public class DataDumpDbUtil {
 		StringBuilder sql = new StringBuilder();
 		sql.append("create table ").append(tableName).append(" (");
 		for (String name : columnArray) {
-			if(name.trim().contains(" "))
-				name = name.replaceAll("\\s","");
+			if (name.trim().contains(" "))
+				name = name.replaceAll("\\s", "");
 			sql.append(name).append(" varchar(255)").append(",");
 		}
 		sql.deleteCharAt(sql.length() - 1).append(")");
@@ -55,9 +55,9 @@ public class DataDumpDbUtil {
 		statement = connection.createStatement();
 		statement.execute(sql.toString());
 	}
-	
+
 	public String createTableName(String loc) {
 		String[] locFolders = loc.split("/");
-		return locFolders[locFolders.length-1].split("\\.")[0].toLowerCase();
+		return locFolders[locFolders.length - 1].split("\\.")[0].toLowerCase();
 	}
 }

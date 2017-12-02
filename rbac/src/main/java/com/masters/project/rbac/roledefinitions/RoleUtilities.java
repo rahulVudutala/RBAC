@@ -14,10 +14,9 @@ import java.util.List;
 
 public class RoleUtilities {
 
-
-//	public RoleUtilities() throws ClassNotFoundException, SQLException {
-//		this.connection = DbConnections.createDbConnection();
-//	}
+	// public RoleUtilities() throws ClassNotFoundException, SQLException {
+	// this.connection = DbConnections.createDbConnection();
+	// }
 
 	// creates roles when requested by the admin
 	public String createRoles(String roleName, int readAccess, int writeAccess, int deleteAccess, int updateAccess)
@@ -60,7 +59,7 @@ public class RoleUtilities {
 		}
 		return roleNames;
 	}
-	
+
 	public Role fetchRole(String roleName) {
 		RoleMappingDbUtil roleMapper = new RoleMappingDbUtil();
 		Role r = roleMapper.fetchRole(roleName);
@@ -80,7 +79,7 @@ public class RoleUtilities {
 			} else if (r.getReadAccess() == 3) {
 				roleMapper.setReadAccess(true);
 			}
-			
+
 			if (r.getWriteAccess() == 1) {
 				roleMapper.setNoWriteAccess(true);
 			} else if (r.getWriteAccess() == 2) {
@@ -88,7 +87,7 @@ public class RoleUtilities {
 			} else if (r.getReadAccess() == 3) {
 				roleMapper.setWriteAccess(true);
 			}
-			
+
 			if (r.getUpdateAccess() == 1) {
 				roleMapper.setNoUpdateAccess(true);
 			} else if (r.getUpdateAccess() == 2) {
@@ -96,7 +95,7 @@ public class RoleUtilities {
 			} else if (r.getUpdateAccess() == 3) {
 				roleMapper.setUpdateAccess(true);
 			}
-			
+
 			if (r.getDeleteAccess() == 1) {
 				roleMapper.setNoDeleteAccess(true);
 			} else if (r.getDeleteAccess() == 2) {

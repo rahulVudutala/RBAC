@@ -29,53 +29,52 @@ public class RoleController {
 	public List<RoleMapperUI> fetchAllRoles() throws ClassNotFoundException, SQLException {
 		return new RoleUtilities().fetchAllRoles();
 	}
-	
-	
+
 	@RequestMapping(value = "/deleteRole/{roleName}", method = RequestMethod.DELETE)
 	public String deleteRole(@PathVariable("roleName") String roleName) throws ClassNotFoundException, SQLException {
 		String response = new RoleUtilities().deleteRoles(roleName);
 		return response;
 	}
-	
+
 	@RequestMapping(value = "/newRole", method = RequestMethod.POST)
 	public String addRole(@RequestBody RoleMapperUI role) throws SQLException {
-		String roleName = role.getRoleName(); 
+		String roleName = role.getRoleName();
 		int readAccess = 0, writeAccess = 0, deleteAccess = 0, updateAccess = 0;
-		if(role.isReadAccess())
+		if (role.isReadAccess())
 			readAccess = 3;
-		else if(role.isPartialReadAccess())
+		else if (role.isPartialReadAccess())
 			readAccess = 2;
-		else if(role.isNoReadAccess())
+		else if (role.isNoReadAccess())
 			readAccess = 1;
-		
-		if(role.isWriteAccess())
+
+		if (role.isWriteAccess())
 			writeAccess = 3;
-		else if(role.isPartialWriteAccess())
+		else if (role.isPartialWriteAccess())
 			writeAccess = 2;
-		else if(role.isNoWriteAccess())
+		else if (role.isNoWriteAccess())
 			writeAccess = 1;
-		
-		if(role.isUpdateAccess())
+
+		if (role.isUpdateAccess())
 			updateAccess = 3;
-		else if(role.isPartialUpdateAccess())
+		else if (role.isPartialUpdateAccess())
 			updateAccess = 2;
-		else if(role.isNoUpdateAccess())
+		else if (role.isNoUpdateAccess())
 			updateAccess = 1;
-		
-		if(role.isDeleteAccess())
+
+		if (role.isDeleteAccess())
 			deleteAccess = 3;
-		else if(role.isPartialDeleteAccess())
+		else if (role.isPartialDeleteAccess())
 			deleteAccess = 2;
-		else if(role.isNoDeleteAccess())
+		else if (role.isNoDeleteAccess())
 			deleteAccess = 1;
-		
+
 		RoleUtilities roleUtilities = new RoleUtilities();
-		if(roleUtilities.fetchAllRoleNames().contains(role.getRoleName())) {
+		if (roleUtilities.fetchAllRoleNames().contains(role.getRoleName())) {
 			roleUtilities.updateRoles(roleName, readAccess, writeAccess, deleteAccess, updateAccess);
 		}
 		return roleUtilities.createRoles(roleName, readAccess, writeAccess, deleteAccess, updateAccess);
 	}
-	
+
 	@RequestMapping(value = "/userRole/{userName}", method = RequestMethod.GET)
 	public List<UserRole> userRole(String userName) {
 		return new UserRoleDbMapping().fetchUserRoleData();

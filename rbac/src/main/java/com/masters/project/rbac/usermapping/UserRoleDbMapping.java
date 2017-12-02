@@ -91,14 +91,14 @@ public class UserRoleDbMapping {
 	// updates the role of the user as requested by admin
 	public String updateUserRole(String userId, String newRole) {
 		try {
-		if (newRole.equals(getUserRole(userId)))
-			return "No changes made";
+			if (newRole.equals(getUserRole(userId)))
+				return "No changes made";
 
-		if (newRole.equals(null))
-			return "please select atleast one role";
+			if (newRole.equals(null))
+				return "please select atleast one role";
 
-		String updateRole = "update user_role set role = ? where user_id=" + Integer.parseInt(userId);
-		
+			String updateRole = "update user_role set role = ? where user_id=" + Integer.parseInt(userId);
+
 			preparedStatement = connection.prepareStatement(updateRole);
 			preparedStatement.setString(1, newRole);
 			preparedStatement.executeUpdate();

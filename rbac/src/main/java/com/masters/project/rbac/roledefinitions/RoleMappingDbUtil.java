@@ -136,12 +136,12 @@ public class RoleMappingDbUtil {
 		rs.close();
 		return roles;
 	}
-	
+
 	public Role fetchRole(String roleName) {
 		Role r = null;
 		try {
 			statement = connection.createStatement();
-			String roleData = "SELECT * FROM role_employee_information where role_id = '"+roleName+"'";
+			String roleData = "SELECT * FROM role_employee_information where role_id = '" + roleName + "'";
 			ResultSet rs = statement.executeQuery(roleData);
 			while (rs.next()) {
 				String role_name = rs.getString("role_id");

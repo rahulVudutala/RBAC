@@ -6,8 +6,8 @@ package com.masters.project.rbac.usermapping;
 import java.util.List;
 
 /**
- * @author rahul.vudutala
- * Class to display user and their role information to admin
+ * @author rahul.vudutala Class to display user and their role information to
+ *         admin
  */
 public class UserRole {
 	private String empId;

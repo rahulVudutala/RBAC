@@ -13,7 +13,7 @@ public class Role {
 	private int writeAccess;
 	private int deleteAccess;
 	private int updateAccess;
-	
+
 	public Role(String roleName, int readAccess, int writeAccess, int deleteAccess, int updateAccess) {
 		this.roleName = roleName;
 		this.readAccess = readAccess;
@@ -25,7 +25,7 @@ public class Role {
 	public String getRoleName() {
 		return roleName;
 	}
-	
+
 	public int getReadAccess() {
 		return readAccess;
 	}

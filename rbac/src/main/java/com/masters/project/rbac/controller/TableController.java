@@ -24,27 +24,27 @@ import com.masters.project.rbac.usermapping.UserRoleDbMapping;
 @RestController
 public class TableController {
 	@RequestMapping(value = "/user/{userName}/tabledata/{tableName}", method = RequestMethod.GET)
-	public List<List<String>> getTableData(@PathVariable("userName") String user, @PathVariable("tableName") String tableName)
-			throws ClassNotFoundException, SQLException {
+	public List<List<String>> getTableData(@PathVariable("userName") String user,
+			@PathVariable("tableName") String tableName) throws ClassNotFoundException, SQLException {
 		UserRoleDbMapping roleMapper = new UserRoleDbMapping();
 		String s = roleMapper.getUserRole(user);
 		Role r = new RoleUtilities().fetchRole(s);
-		if(r.getReadAccess() == 3)
+		if (r.getReadAccess() == 3)
 			return new ListTablesDbUtil().fetchTableData(tableName);
-		else if(r.getReadAccess() == 2)
+		else if (r.getReadAccess() == 2)
 			return new ListTablesDbUtil().fetchTableDataPartial(tableName);
 		else
 			return null;
 	}
-	
+
 	@RequestMapping(value = "/user/{userName}", method = RequestMethod.GET)
 	public List<String> getTables(@PathVariable("userName") String user) {
 		UserRoleDbMapping roleMapper = new UserRoleDbMapping();
 		String s = roleMapper.getUserRole(user);
 		Role r = new RoleUtilities().fetchRole(s);
-		if(r.getReadAccess() == 3)
+		if (r.getReadAccess() == 3)
 			return new ListTablesDbUtil().listAllTables();
-		else if(r.getReadAccess() == 2)
+		else if (r.getReadAccess() == 2)
 			return new ListTablesDbUtil().listAllTables();
 		else
 			return new ListTablesDbUtil().listAllTables();
