@@ -123,11 +123,15 @@ public class UserRoleDbMapping {
 	public String deleteUserRole(String userId) {
 		String role = "";
 		try {
-			statement = connection.createStatement();
+			Connection c1 = DbConnections.createDbConnection();
+			statement = c1.createStatement();
 			role = getUserRole(userId);
-			String deleteData = "DELETE from user_role where role_id = " + userId + " and role = " + role;
+			String deleteData = "DELETE from user_role where role_id = " + Integer.parseInt(userId) + " and role = " + role;
 			statement.executeUpdate(deleteData);
+			c1.close();
 		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} finally {
 			try {
