@@ -70,7 +70,7 @@ public class UserRoleDbMapping {
 		StringBuilder userRoles = new StringBuilder();
 		try {
 			statement = connection.createStatement();
-			String role = "select role from user_role where user_id = " + userId;
+			String role = "select role from user_role where user_id = " + Integer.parseInt(userId);
 			ResultSet rs = statement.executeQuery(role);
 			while (rs.next()) {
 				userRoles.append(rs.getString("role")).append(",");
