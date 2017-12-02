@@ -81,7 +81,8 @@ public class RoleController {
 	}
 	
 	@RequestMapping(value = "/userRole/update", method = RequestMethod.POST)
-	public String updateRole(@RequestBody UserRole userRole) {
-		return new UserRoleDbMapping().updateUserRole(userRole.getEmpId(), userRole.getRole());
+	public String updateRole(@RequestBody String userRole) {
+		String[] roleArray = userRole.split(",");
+		return new UserRoleDbMapping().updateUserRole(roleArray[0], roleArray[1]);
 	}
 }
