@@ -21,7 +21,7 @@ import com.masters.project.rbac.usermapping.UserRoleDbMapping;
  * @author rahul.vudutala
  *
  */
-
+@CrossOrigin(origins = { "http://datagovernance.us-west-1.elasticbeanstalk.com" })
 @RestController
 public class TableController {
 	@RequestMapping(value = "/user/{userName}/tabledata/{tableName}", method = RequestMethod.GET)
