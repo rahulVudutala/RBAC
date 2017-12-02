@@ -79,4 +79,9 @@ public class RoleController {
 	public List<UserRole> userRole(String userName) {
 		return new UserRoleDbMapping().fetchUserRoleData();
 	}
+	
+	@RequestMapping(value = "/userRole/update", method = RequestMethod.POST)
+	public String updateRole(@RequestBody UserRole userRole) {
+		return new UserRoleDbMapping().updateUserRole(userRole.getEmpId(), userRole.getRole());
+	}
 }
