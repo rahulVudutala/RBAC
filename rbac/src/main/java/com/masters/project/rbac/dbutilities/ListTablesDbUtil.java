@@ -174,7 +174,17 @@ public class ListTablesDbUtil {
 		
 	}
 
-	public void deleteTableData(String tableName, List<String> tableRecord) {
-
+	public String deleteTableData(String tableName, String columnName, String id) {
+		Statement statement;
+		try {
+			statement = connection.createStatement();
+			String deleteData = "DELETE from "+tableName+" where " + columnName +  "='" + id + "'";
+			statement.executeUpdate(deleteData);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DbConnections.closeConnection(connection);
+		}
+		return "Table Data Deleted Successfully";
 	}
 }

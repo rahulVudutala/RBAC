@@ -49,4 +49,24 @@ public class TableController {
 		else
 			return new ListTablesDbUtil().listAllTables();
 	}
+
+	@RequestMapping(value = "/user/{userName}/table/{tableName}/column/{columnName}/data/{data}", method = RequestMethod.DELETE)
+	public String deleteTableData(@PathVariable("userName") String userName,
+			@PathVariable("tableName") String tableName, @PathVariable("columnName") String columnName,
+			@PathVariable("data") String data) {
+		UserRoleDbMapping roleMapper = new UserRoleDbMapping();
+		String s = roleMapper.getUserRole(userName);
+		Role r = new RoleUtilities().fetchRole(s);
+		if (r.getReadAccess() == 3)
+			return new ListTablesDbUtil().deleteTableData(tableName, columnName, data);
+		else if (r.getReadAccess() == 2)
+			return "Can't delete data";
+		else
+			return "Can't delete data";
+	}
+	
+	@RequestMapping(value = "/user/{userName}/table/{tableName}", method = RequestMethod.POST)
+	public String updateTableData() {
+		return "Yes";
+	}
 }
