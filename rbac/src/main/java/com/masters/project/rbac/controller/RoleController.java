@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.masters.project.rbac.roledefinitions.RoleMapperUI;
 import com.masters.project.rbac.roledefinitions.RoleUtilities;
+import com.masters.project.rbac.usermapping.UserRole;
 import com.masters.project.rbac.usermapping.UserRoleDbMapping;
 
 /**
@@ -34,11 +35,6 @@ public class RoleController {
 	public String deleteRole(@PathVariable("roleName") String roleName) throws ClassNotFoundException, SQLException {
 		String response = new RoleUtilities().deleteRoles(roleName);
 		return response;
-	}
-	
-	@RequestMapping(value = "/updateRole", method = RequestMethod.PUT)
-	public void updateRole(RoleMapperUI role) {
-		
 	}
 	
 	@RequestMapping(value = "/newRole", method = RequestMethod.POST)
@@ -74,12 +70,14 @@ public class RoleController {
 			deleteAccess = 1;
 		
 		RoleUtilities roleUtilities = new RoleUtilities();
+		if(roleUtilities.fetchAllRoleNames().contains(role.getRoleName())) {
+			roleUtilities.updateRoles(roleName, readAccess, writeAccess, deleteAccess, updateAccess);
+		}
 		return roleUtilities.createRoles(roleName, readAccess, writeAccess, deleteAccess, updateAccess);
 	}
 	
 	@RequestMapping(value = "/userRole/{userName}", method = RequestMethod.GET)
-	public void userRole(String userName) {
-		UserRoleDbMapping ur = new UserRoleDbMapping();
-		ur.fetchUserRoleData();
+	public List<UserRole> userRole(String userName) {
+		return new UserRoleDbMapping().fetchUserRoleData();
 	}
 }
