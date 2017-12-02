@@ -5,6 +5,7 @@ package com.masters.project.rbac.dbutilities;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -167,11 +168,41 @@ public class ListTablesDbUtil {
 		return tableVal;
 	}
 
-	public void updateTableData(String tableName, List<String> tableRecord) {
+	public String updateTableData(String[] tableRecord) {
 		DatabaseMetaData meta;
-		StringBuilder updateRecord = new StringBuilder();
-		updateRecord.append("update ").append(tableName).append(" set");
-		
+		ResultSet rscols;
+		try {
+			String tableName = tableRecord[1];
+			String firstColVal = tableRecord[2];
+			
+			meta = connection.getMetaData();
+			rscols = meta.getColumns("", "", tableName, "");
+			
+			StringBuilder updateRecord = new StringBuilder();
+			updateRecord.append("update ").append(tableName).append(" set ");
+			rscols.first();
+			String firstCol = rscols.getString("COLUMN_NAME");
+			rscols.beforeFirst();
+			while(rscols.next()) {
+				updateRecord.append(rscols.getString("COLUMN_NAME")).append(" = ?,");
+			}
+			
+			updateRecord.deleteCharAt(updateRecord.length()-1).append(" ");
+			updateRecord.append("where ").append(firstCol).append(" =?");
+			System.out.println(updateRecord.toString());
+			
+			PreparedStatement preparedStatement = connection.prepareStatement(updateRecord.toString());
+			for(int i= 3;i<tableRecord.length;i++) {
+				preparedStatement.setString(i-2,tableRecord[i]);
+			}
+			preparedStatement.setString(tableRecord.length-2,firstColVal);
+			preparedStatement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DbConnections.closeConnection(connection);
+		}
+		return "Succesfully Updated";
 	}
 
 	public String deleteTableData(String tableName, String columnName, String id) {

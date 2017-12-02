@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -57,16 +58,23 @@ public class TableController {
 		UserRoleDbMapping roleMapper = new UserRoleDbMapping();
 		String s = roleMapper.getUserRole(userName);
 		Role r = new RoleUtilities().fetchRole(s);
-		if (r.getReadAccess() == 3)
+		if (r.getDeleteAccess() == 3)
 			return new ListTablesDbUtil().deleteTableData(tableName, columnName, data);
-		else if (r.getReadAccess() == 2)
+		else if (r.getDeleteAccess() == 2)
 			return "Can't delete data";
 		else
 			return "Can't delete data";
 	}
-	
-	@RequestMapping(value = "/user/{userName}/table/{tableName}", method = RequestMethod.POST)
-	public String updateTableData() {
-		return "Yes";
+
+	@RequestMapping(value = "/user/updateTableData", method = RequestMethod.POST)
+	public String updateTableData(@RequestBody String updateData) {
+		String[] updateDataArary = updateData.split(",");
+		UserRoleDbMapping roleMapper = new UserRoleDbMapping();
+		String s = roleMapper.getUserRole(updateDataArary[0]);
+		Role r = new RoleUtilities().fetchRole(s);
+		if(r.getUpdateAccess() == 3 || r.getUpdateAccess() == 2)
+			return new ListTablesDbUtil().updateTableData(updateDataArary);
+		else
+			return "You dont have update access";
 	}
 }
