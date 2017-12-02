@@ -98,12 +98,16 @@ public class UserRoleDbMapping {
 				return "please select atleast one role";
 
 			String updateRole = "update user_role set role = ? where user_id= ?";
-
-			preparedStatement = connection.prepareStatement(updateRole);
+			Connection c1 = DbConnections.createDbConnection();
+			preparedStatement = c1.prepareStatement(updateRole);
 			preparedStatement.setString(1, newRole);
 			preparedStatement.setInt(2, Integer.parseInt(userId));
 			preparedStatement.executeUpdate();
+			c1.close();
 		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			try {
