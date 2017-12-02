@@ -38,7 +38,10 @@ public class RoleController {
 
 	@RequestMapping(value = "/newRole", method = RequestMethod.POST)
 	public String addRole(@RequestBody String role) throws SQLException {
+		System.out.println(role);
 		String[] roleArray = role.split(",");
+		for(int i=0;i<roleArray.length;i++)
+			System.out.print(roleArray[i]+" ");
 		String roleName = roleArray[0];
 		int readAccess = 0, writeAccess = 0, deleteAccess = 0, updateAccess = 0;
 		if (roleArray[1].equals("true"))
@@ -54,24 +57,24 @@ public class RoleController {
 			writeAccess = 2;
 		else if (roleArray[6].equals("true"))
 			writeAccess = 1;
-
-		if (roleArray[10].equals("true"))
-			updateAccess = 3;
-		else if (roleArray[11].equals("true"))
-			updateAccess = 2;
-		else if (roleArray[12].equals("true"))
-			updateAccess = 1;
-
+		
 		if (roleArray[7].equals("true"))
-			deleteAccess = 3;
+			updateAccess = 3;
 		else if (roleArray[8].equals("true"))
-			deleteAccess = 2;
+			updateAccess = 2;
 		else if (roleArray[9].equals("true"))
+			updateAccess = 1;
+		
+		if (roleArray[10].equals("true"))
+			deleteAccess = 3;
+		else if (roleArray[11].equals("true"))
+			deleteAccess = 2;
+		else if (roleArray[12].equals("true"))
 			deleteAccess = 1;
 
 		RoleUtilities roleUtilities = new RoleUtilities();
 		if (roleUtilities.fetchAllRoleNames().contains(roleArray[0])) {
-			roleUtilities.updateRoles(roleName, readAccess, writeAccess, deleteAccess, updateAccess);
+			return roleUtilities.updateRoles(roleName, readAccess, writeAccess, deleteAccess, updateAccess);
 		}
 		return roleUtilities.createRoles(roleName, readAccess, writeAccess, deleteAccess, updateAccess);
 	}
@@ -80,7 +83,7 @@ public class RoleController {
 	public List<UserRole> userRole(String userName) {
 		return new UserRoleDbMapping().fetchUserRoleData();
 	}
-	
+
 	@RequestMapping(value = "/userRole/update", method = RequestMethod.POST)
 	public String updateRole(@RequestBody String userRole) {
 		String[] roleArray = userRole.split(",");

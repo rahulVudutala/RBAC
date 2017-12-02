@@ -24,11 +24,11 @@ public class RoleUtilities {
 	}
 
 	// updates roles when requested by admin
-	public void updateRoles(String roleName, int readAccess, int writeAccess, int deleteAccess, int updateAccess)
+	public String updateRoles(String roleName, int readAccess, int writeAccess, int deleteAccess, int updateAccess)
 			throws SQLException {
 		RoleMappingDbUtil roleMapper = new RoleMappingDbUtil();
 		Role role = new Role(roleName, readAccess, writeAccess, deleteAccess, updateAccess);
-		roleMapper.updateRoleData(role);
+		return roleMapper.updateRoleData(role);
 	}
 
 	// deletes roles when requested by admin

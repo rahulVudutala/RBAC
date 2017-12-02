@@ -70,7 +70,7 @@ public class RoleMappingDbUtil {
 	}
 
 	// updates data from the role_employee_information
-	public void updateRoleData(Role roleInfo) {
+	public String updateRoleData(Role roleInfo) {
 		try {
 			StringBuilder updateData = new StringBuilder();
 			updateData.append("update role_employee_information set ");
@@ -120,6 +120,7 @@ public class RoleMappingDbUtil {
 		} finally {
 			DbConnections.closeConnection(connection);
 		}
+		return "Successfully Updated";
 	}
 
 	// retrieves roles and their permission levels from the
