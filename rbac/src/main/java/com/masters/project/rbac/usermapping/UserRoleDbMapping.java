@@ -97,10 +97,11 @@ public class UserRoleDbMapping {
 			if (newRole.equals(null))
 				return "please select atleast one role";
 
-			String updateRole = "update user_role set role = ? where user_id=" + Integer.parseInt(userId);
+			String updateRole = "update user_role set role = ? where user_id= ?";
 
 			preparedStatement = connection.prepareStatement(updateRole);
 			preparedStatement.setString(1, newRole);
+			preparedStatement.setInt(2, Integer.parseInt(userId));
 			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
