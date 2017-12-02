@@ -1,1 +1,1 @@
-web java -Dserver.port=$PORT $JAVA_OPTS -jar target/rbac.jar
+web java -Dserver.port=$PORT $JAVA_OPTS -jar target/rbac-0.0.1-SNAPSHOT.jar
