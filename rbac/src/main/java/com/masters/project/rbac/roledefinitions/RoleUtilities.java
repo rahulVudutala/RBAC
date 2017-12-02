@@ -14,10 +14,6 @@ import java.util.List;
 
 public class RoleUtilities {
 
-	// public RoleUtilities() throws ClassNotFoundException, SQLException {
-	// this.connection = DbConnections.createDbConnection();
-	// }
-
 	// creates roles when requested by the admin
 	public String createRoles(String roleName, int readAccess, int writeAccess, int deleteAccess, int updateAccess)
 			throws SQLException {

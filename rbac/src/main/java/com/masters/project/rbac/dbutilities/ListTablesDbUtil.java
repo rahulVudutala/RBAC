@@ -166,4 +166,15 @@ public class ListTablesDbUtil {
 		}
 		return tableVal;
 	}
+
+	public void updateTableData(String tableName, List<String> tableRecord) {
+		DatabaseMetaData meta;
+		StringBuilder updateRecord = new StringBuilder();
+		updateRecord.append("update ").append(tableName).append(" set");
+		
+	}
+
+	public void deleteTableData(String tableName, List<String> tableRecord) {
+
+	}
 }

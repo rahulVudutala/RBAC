@@ -49,6 +49,8 @@ public class RoleMappingDbUtil {
 			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			DbConnections.closeConnection(connection);
 		}
 		return "Succesfully created";
 	}
@@ -61,79 +63,92 @@ public class RoleMappingDbUtil {
 			statement.executeUpdate(deleteData);
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			DbConnections.closeConnection(connection);
 		}
 		return "Role Deleted Successfully";
 	}
 
 	// updates data from the role_employee_information
-	public void updateRoleData(Role roleInfo) throws SQLException {
-		StringBuilder updateData = new StringBuilder();
-		updateData.append("update role_employee_information set ");
-		int count = 1;
+	public void updateRoleData(Role roleInfo) {
+		try {
+			StringBuilder updateData = new StringBuilder();
+			updateData.append("update role_employee_information set ");
+			int count = 1;
 
-		if (roleInfo.getReadAccess() != 0) {
-			updateData.append("read_access_level=?").append(",");
-		}
+			if (roleInfo.getReadAccess() != 0) {
+				updateData.append("read_access_level=?").append(",");
+			}
 
-		if (roleInfo.getWriteAccess() != 0) {
-			updateData.append("write_access_level=?").append(",");
-		}
+			if (roleInfo.getWriteAccess() != 0) {
+				updateData.append("write_access_level=?").append(",");
+			}
 
-		if (roleInfo.getUpdateAccess() != 0) {
-			updateData.append("update_access_level=?").append(",");
-		}
+			if (roleInfo.getUpdateAccess() != 0) {
+				updateData.append("update_access_level=?").append(",");
+			}
 
-		if (roleInfo.getDeleteAccess() != 0) {
-			updateData.append("delete_access_level=?").append(",");
-		}
-		updateData.deleteCharAt(updateData.length() - 1);
-		updateData.append(" where role_id=?");
+			if (roleInfo.getDeleteAccess() != 0) {
+				updateData.append("delete_access_level=?").append(",");
+			}
+			updateData.deleteCharAt(updateData.length() - 1);
+			updateData.append(" where role_id=?");
+			preparedStatement = connection.prepareStatement(updateData.toString());
+			if (roleInfo.getReadAccess() != 0) {
+				preparedStatement.setInt(count, roleInfo.getReadAccess());
+				count++;
+			}
 
-		preparedStatement = connection.prepareStatement(updateData.toString());
-		if (roleInfo.getReadAccess() != 0) {
-			preparedStatement.setInt(count, roleInfo.getReadAccess());
-			count++;
-		}
+			if (roleInfo.getWriteAccess() != 0) {
+				preparedStatement.setInt(count, roleInfo.getWriteAccess());
+				count++;
+			}
 
-		if (roleInfo.getWriteAccess() != 0) {
-			preparedStatement.setInt(count, roleInfo.getWriteAccess());
-			count++;
-		}
+			if (roleInfo.getUpdateAccess() != 0) {
+				preparedStatement.setInt(count, roleInfo.getUpdateAccess());
+				count++;
+			}
 
-		if (roleInfo.getUpdateAccess() != 0) {
-			preparedStatement.setInt(count, roleInfo.getUpdateAccess());
-			count++;
+			if (roleInfo.getDeleteAccess() != 0) {
+				preparedStatement.setInt(count, roleInfo.getDeleteAccess());
+				count++;
+			}
+			preparedStatement.setString(count, roleInfo.getRoleName());
+			preparedStatement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DbConnections.closeConnection(connection);
 		}
-
-		if (roleInfo.getDeleteAccess() != 0) {
-			preparedStatement.setInt(count, roleInfo.getDeleteAccess());
-			count++;
-		}
-		preparedStatement.setString(count, roleInfo.getRoleName());
-		preparedStatement.executeUpdate();
 	}
 
 	// retrieves roles and their permission levels from the
 	// role_employee_information table
-	public List<Role> fetchAllRoles() throws SQLException {
+	public List<Role> fetchAllRoles() {
 		List<Role> roles = new ArrayList<Role>();
-		statement = connection.createStatement();
-		String roleData = "SELECT * FROM role_employee_information";
-		ResultSet rs = statement.executeQuery(roleData);
-		while (rs.next()) {
-			String role_name = rs.getString("role_id");
-			int read_access_level = rs.getInt("read_access_level");
-			int write_access_level = rs.getInt("write_access_level");
-			int update_access_level = rs.getInt("update_access_level");
-			int delete_access_level = rs.getInt("delete_access_level");
-			System.out.print(role_name + " " + read_access_level + " " + write_access_level + " " + update_access_level
-					+ " " + delete_access_level);
-			System.out.println("");
-			Role r = new Role(role_name, read_access_level, write_access_level, update_access_level,
-					delete_access_level);
-			roles.add(r);
+		try {
+			statement = connection.createStatement();
+			String roleData = "SELECT * FROM role_employee_information";
+			ResultSet rs = statement.executeQuery(roleData);
+			while (rs.next()) {
+				String role_name = rs.getString("role_id");
+				int read_access_level = rs.getInt("read_access_level");
+				int write_access_level = rs.getInt("write_access_level");
+				int update_access_level = rs.getInt("update_access_level");
+				int delete_access_level = rs.getInt("delete_access_level");
+				System.out.print(role_name + " " + read_access_level + " " + write_access_level + " "
+						+ update_access_level + " " + delete_access_level);
+				System.out.println("");
+				Role r = new Role(role_name, read_access_level, write_access_level, update_access_level,
+						delete_access_level);
+				roles.add(r);
+			}
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DbConnections.closeConnection(connection);
 		}
-		rs.close();
 		return roles;
 	}
 
@@ -154,6 +169,8 @@ public class RoleMappingDbUtil {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			DbConnections.closeConnection(connection);
 		}
 		return r;
 	}
