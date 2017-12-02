@@ -37,39 +37,40 @@ public class RoleController {
 	}
 
 	@RequestMapping(value = "/newRole", method = RequestMethod.POST)
-	public String addRole(@RequestBody RoleMapperUI role) throws SQLException {
-		String roleName = role.getRoleName();
+	public String addRole(@RequestBody String role) throws SQLException {
+		String[] roleArray = role.split(",");
+		String roleName = roleArray[0];
 		int readAccess = 0, writeAccess = 0, deleteAccess = 0, updateAccess = 0;
-		if (role.isReadAccess())
+		if (roleArray[1].equals("true"))
 			readAccess = 3;
-		else if (role.isPartialReadAccess())
+		else if (roleArray[2].equals("true"))
 			readAccess = 2;
-		else if (role.isNoReadAccess())
+		else if (roleArray[3].equals("true"))
 			readAccess = 1;
 
-		if (role.isWriteAccess())
+		if (roleArray[4].equals("true"))
 			writeAccess = 3;
-		else if (role.isPartialWriteAccess())
+		else if (roleArray[5].equals("true"))
 			writeAccess = 2;
-		else if (role.isNoWriteAccess())
+		else if (roleArray[6].equals("true"))
 			writeAccess = 1;
 
-		if (role.isUpdateAccess())
+		if (roleArray[10].equals("true"))
 			updateAccess = 3;
-		else if (role.isPartialUpdateAccess())
+		else if (roleArray[11].equals("true"))
 			updateAccess = 2;
-		else if (role.isNoUpdateAccess())
+		else if (roleArray[12].equals("true"))
 			updateAccess = 1;
 
-		if (role.isDeleteAccess())
+		if (roleArray[7].equals("true"))
 			deleteAccess = 3;
-		else if (role.isPartialDeleteAccess())
+		else if (roleArray[8].equals("true"))
 			deleteAccess = 2;
-		else if (role.isNoDeleteAccess())
+		else if (roleArray[9].equals("true"))
 			deleteAccess = 1;
 
 		RoleUtilities roleUtilities = new RoleUtilities();
-		if (roleUtilities.fetchAllRoleNames().contains(role.getRoleName())) {
+		if (roleUtilities.fetchAllRoleNames().contains(roleArray[0])) {
 			roleUtilities.updateRoles(roleName, readAccess, writeAccess, deleteAccess, updateAccess);
 		}
 		return roleUtilities.createRoles(roleName, readAccess, writeAccess, deleteAccess, updateAccess);
