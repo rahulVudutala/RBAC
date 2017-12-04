@@ -165,8 +165,8 @@ public class RoleMappingDbUtil {
 				int write_access_level = rs.getInt("write_access_level");
 				int update_access_level = rs.getInt("update_access_level");
 				int delete_access_level = rs.getInt("delete_access_level");
-				r = new Role(role_name, read_access_level, write_access_level, update_access_level,
-						delete_access_level);
+				r = new Role(role_name, read_access_level, write_access_level, delete_access_level,
+						update_access_level);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
