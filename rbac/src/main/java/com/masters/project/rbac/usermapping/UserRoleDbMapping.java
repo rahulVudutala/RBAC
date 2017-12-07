@@ -75,7 +75,8 @@ public class UserRoleDbMapping {
 			while (rs.next()) {
 				userRoles.append(rs.getString("role")).append(",");
 			}
-			userRoles.deleteCharAt(userRoles.length() - 1);
+			if (userRoles.length() != 0)
+				userRoles.deleteCharAt(userRoles.length() - 1);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -91,11 +92,17 @@ public class UserRoleDbMapping {
 	// updates the role of the user as requested by admin
 	public String updateUserRole(String userId, String newRole) {
 		try {
-			if (newRole.equals(getUserRole(userId)))
+
+			String userRole = getUserRole(userId);
+
+			if (newRole.equals(userRole))
 				return "No changes made";
 
 			if (newRole.equals(null))
 				return "please select atleast one role";
+
+			if (userRole.equals(""))
+				return insertUserRole(userId, newRole);
 
 			String updateRole = "update user_role set role = ? where user_id= ?";
 			Connection c1 = DbConnections.createDbConnection();
@@ -125,7 +132,8 @@ public class UserRoleDbMapping {
 			Connection c1 = DbConnections.createDbConnection();
 			statement = c1.createStatement();
 			role = getUserRole(userId);
-			String deleteData = "DELETE from user_role where role_id = " + Integer.parseInt(userId) + " and role = " + role;
+			String deleteData = "DELETE from user_role where role_id = " + Integer.parseInt(userId) + " and role = "
+					+ role;
 			statement.executeUpdate(deleteData);
 			c1.close();
 		} catch (SQLException e) {
@@ -140,5 +148,22 @@ public class UserRoleDbMapping {
 			}
 		}
 		return "Removed the user from " + role + "role";
+	}
+
+	public String insertUserRole(String userId, String userRole) {
+		Connection c2 = null;
+		try {
+			String insertData = "insert into user_role " + " values" + "(?,?)";
+			c2 = DbConnections.createDbConnection();
+			preparedStatement = c2.prepareStatement(insertData);
+			preparedStatement.setInt(1, Integer.parseInt(userId));
+			preparedStatement.setString(2, userRole);
+			preparedStatement.executeUpdate();
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DbConnections.closeConnection(c2);
+		}
+		return "Role Updated";
 	}
 }
