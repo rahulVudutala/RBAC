@@ -61,6 +61,10 @@ public class RoleMappingDbUtil {
 			statement = connection.createStatement();
 			String deleteData = "DELETE from role_employee_information where role_id = " + "'" + roleName + "'";
 			statement.executeUpdate(deleteData);
+			
+			statement = connection.createStatement();
+			String deleteUserRole = "DELETE from user_role where role = " + "'" + roleName + "'";
+			statement.executeUpdate(deleteUserRole);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
