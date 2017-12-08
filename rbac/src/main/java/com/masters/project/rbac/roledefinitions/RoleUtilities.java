@@ -80,7 +80,7 @@ public class RoleUtilities {
 				roleMapper.setNoWriteAccess(true);
 			} else if (r.getWriteAccess() == 2) {
 				roleMapper.setPartialWriteAccess(true);
-			} else if (r.getReadAccess() == 3) {
+			} else if (r.getWriteAccess() == 3) {
 				roleMapper.setWriteAccess(true);
 			}
 
