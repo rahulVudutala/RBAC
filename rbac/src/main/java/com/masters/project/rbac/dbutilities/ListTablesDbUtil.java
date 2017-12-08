@@ -52,6 +52,28 @@ public class ListTablesDbUtil {
 		}
 		return tablesList;
 	}
+	
+	public List<String> listAllTablesPartial() {
+		List<String> tablesList = new ArrayList<String>();
+		DatabaseMetaData metaData;
+		try {
+			metaData = connection.getMetaData();
+			ResultSet resultSet = metaData.getTables(null, null, "%", null);
+			while (resultSet.next()) {
+				if(!UtilConstants.tableMetaData.contains(resultSet.getString(3)))
+					tablesList.add(resultSet.getString(3));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return tablesList;
+	}
 
 	public List<List<String>> fetchTableData(String tableName) {
 		List<List<String>> tableVal = new ArrayList<List<String>>();

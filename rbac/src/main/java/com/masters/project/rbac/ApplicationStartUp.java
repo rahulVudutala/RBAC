@@ -30,6 +30,13 @@ public class ApplicationStartUp implements ApplicationListener<ApplicationReadyE
 			while (rs.next()) {
 				UtilConstants.columnMetaData.add(rs.getString("column_detail"));
 			}
+			
+			statement = c.createStatement();
+			String tableMetaData = "select table_detail from column_metadata where column_detail is null";
+			rs = statement.executeQuery(tableMetaData);
+			while (rs.next()) {
+				UtilConstants.tableMetaData.add(rs.getString("table_detail"));
+			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {

@@ -47,9 +47,9 @@ public class TableController {
 		if (r.getReadAccess() == 3)
 			return new ListTablesDbUtil().listAllTables();
 		else if (r.getReadAccess() == 2)
-			return new ListTablesDbUtil().listAllTables();
+			return new ListTablesDbUtil().listAllTablesPartial();
 		else
-			return new ListTablesDbUtil().listAllTables();
+			return new ListTablesDbUtil().listAllTablesPartial();
 	}
 
 	@RequestMapping(value = "/user/{userName}/table/{tableName}/column/{columnName}/data/{data}", method = RequestMethod.DELETE)
